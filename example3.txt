@@ -1,0 +1,22 @@
+{COMMENT|Reverse a line. Each line starts with A and ends with B. Remove them too.}
+
+
+{SEEK|EOF|APPEND|{SEEK|SOF|FIND|B|SEEK|CL|INSERT|\{SEEK\|EOL\|APPEND\||SEEK|CR|APPEND|?\|SEEK\|SOF\|FIND\|A?\|DELETE\|SEEK\|SOL\|FIND\|B\|DELETE\|FIND\|doesn't exist\}}|FIND|doesn't exist}
+{COMMENT|Appends to the end of the file the main body of the program.}
+{COMMENT|The body finds B, seeks 1 to the left, and constructs a command around the char before B.}
+{COMMENT|This command takes the char before B "as an argument", and appends it to the end of the line, together with a ? mark.}
+{COMMENT|This command always deliberately fails, to be destroyed.}
+{COMMENT|However, before failing, this command checks if it's been passed A? "as an argument", and in that case, removes it and the "B" that's by now at the start of the line.}
+
+
+
+{SEEK|EOF|APPEND|{SEEK|SOF|FIND|?|DELETE}|FIND|doesn't exist}
+{COMMENT|Cleaning up the ? question marks.}
+
+
+~~~~~~~
+A1234567B
+
+AqweB
+
+Aj_k_l_m_n_o_pB

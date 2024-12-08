@@ -1,0 +1,20 @@
+adasd {FIND |AAA| REPLACE |{FIND|CCC|DELETE}|DELETE|REMOVE|AAA|MOVE|1} xvcxcv {FIND|AAA|REPLACE|BBB}
+
+adasd {FIND |AAA|REMOVE|A} xvcxcv 
+{FIND|AA|APPEND|BBB|MOVE|-999|INSERT|S|FIND|A|DELETE}
+
+AAA
+
+python -m mypy newspeak.py
+
+
+{FIND|A|COMMENT|Reverse a line. The line starts with A and ends with B. Remove them too.}
+
+
+{SEEK|EOF|APPEND|{SEEK|SOF|FIND|B|SEEK|CL|INSERT|\{SEEK\|EOL\|APPEND\||SEEK|CR|APPEND|\|FIND\|A\|DELETE\|SEEK\|SOL\|FIND\|B\|DELETE\|FIND\|doesn't exist\}}|FIND|doesn't exist}
+
+~~~~~~~
+A1234567B
+
+AQWEB
+

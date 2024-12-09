@@ -552,9 +552,9 @@ class GameState:
     def execute_SEEK(self, argument: SEEK_ARGS) -> bool:
         to_set: int
         if argument is SEEK_ARGS.SOL:
-            to_set: int = find_char_backwards(
+            to_set = find_char_backwards(
                 self.current_field, self.beginning_cursor - 1, "\n"
-            )
+            ) + 1
         elif argument is SEEK_ARGS.EOL:
             try:
                 to_set = self.current_field.index("\n", self.ending_cursor)

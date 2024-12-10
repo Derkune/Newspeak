@@ -646,6 +646,17 @@ class GameState:
         for line in self.execution_report:
             print(line)
 
+    def process_output_command(self, command: str) -> None:
+        try:
+            split = command.split(" ")
+            assert split[0] == "output", "Didn't understand this command!"
+            assert len(split) > 1
+            with Path(split[1]).open("w") as file:
+                file.write(self.current_field)
+                print(f"Written current field state to {split[1]}!")
+        except Exception as e:
+            print(f"Trying to write state of current field, error: {e}")
+
 
 def main() -> None:
     # Parse command line arguments
@@ -691,10 +702,22 @@ def event_loop(file: Path) -> None:
             print(GAME_STATE.current_field)
             print(f"Cursors: {(GAME_STATE.beginning_cursor, GAME_STATE.ending_cursor)}")
         elif command == "help":
-            print("TODO")
+            print(
+                """
+The Newspeak interpreter accepts the following commands:
+  simply pressing Enter without entering any command will advance 1 turn of processing the current program and output the report on processing. The vast majority of progams need several steps to complete!
+  help will output this message.
+  stop, exit, quit, e, q are all aliases of each other. They stop the current interpeter session.
+  snap will output the current state of the field being processed.
+  output [file name with extension] will output the current state of the board to a file at the passed argument.
+  process will enter the intepreter into a processing mode. In this mode, processing turns will advance without the input from the editor. To stop it, enter s (as in stop) and press Enter.
+"""
+            )
         elif command == "process":
             GAME_STATE.finished_running_for_automatic_processing = False
             processing_mode(GAME_STATE)
+        elif command.find("output") >= 0:
+            GAME_STATE.process_output_command(command)
         else:
             print("I don't understand that command.")
 

@@ -2,7 +2,7 @@
 
 {FIND|i|SEEK|EOF|APPEND|xxx|ONCE}
 
-{FIND|i|FIND|+3|ONCE}
+{FIND|i|SEEK|+3|ONCE}
 
 ~~~~~~~~~~~~~~~~~
 AAA

@@ -376,7 +376,7 @@ class GameState:
         self.state: StatesOfGame = StatesOfGame.FINDING_COMMAND
 
         self.current_command: Optional[ParsedCommand] = None
-        self.current_command_bounds: Optional[Tuple[int, int]] = None
+        self.current_command_beg_and_text: Optional[Tuple[int, str]] = None
 
         self.current_command_part_idx: int = 0
 
@@ -434,18 +434,23 @@ class GameState:
             len(part_before_braces),
             len(self.current_field) - len(part_after_braces),
         )
-        self.current_command_bounds = (self.beginning_cursor, self.ending_cursor)
+        self.current_command_beg_and_text = (self.beginning_cursor, command_text)
 
         self.execution_report.append(f"""Found command: '{self.current_command}'""")
 
         self.state = StatesOfGame.EXECUTING_COMMAND_PART
 
     def execute_DELETING_COMMAND(self) -> None:
-        assert self.current_command_bounds
-        first_part_of_field: str = self.current_field[: self.current_command_bounds[0]]
-        last_part_of_field: str = self.current_field[self.current_command_bounds[1] :]
+        assert self.current_command_beg_and_text
+        first_part_of_field: str = self.current_field[
+            : self.current_command_beg_and_text[0]
+        ]
+        last_part_of_field: str = self.current_field[
+            self.current_command_beg_and_text[0]
+            + len(self.current_command_beg_and_text[1]) :
+        ]
         self.current_field = first_part_of_field + last_part_of_field
-        self.current_command_bounds = None
+        self.current_command_beg_and_text = None
         self.current_command_part_idx = 0
         self.beginning_cursor = 0
         self.ending_cursor = 0
@@ -514,6 +519,36 @@ class GameState:
         else:
             raise NotImplementedError()
 
+    def try_relocate_start_of_command_on_removal(
+        self, len_of_part_before_removed: int, len_of_removed_part: int
+    ) -> None:
+        assert self.current_command_beg_and_text is not None
+        if (
+            self.current_command_beg_and_text[0]
+            + len(self.current_command_beg_and_text[1])
+            >= len_of_part_before_removed
+        ):
+            assert (
+                self.current_command_beg_and_text[0]
+                > len_of_part_before_removed + len_of_removed_part
+            )
+            tup = self.current_command_beg_and_text
+            tup = (tup[0] - len_of_removed_part, tup[1])
+            self.current_command_beg_and_text = tup
+
+    def try_relocate_start_of_command_on_insertion(
+        self, idx_of_insertion: int, len_of_insertion: int
+    ) -> None:
+        assert self.current_command_beg_and_text
+        if (
+            self.current_command_beg_and_text[0]
+            + len(self.current_command_beg_and_text[1])
+            > idx_of_insertion
+        ):
+            tup = self.current_command_beg_and_text
+            tup = (tup[0] + len_of_insertion, tup[1])
+            self.current_command_beg_and_text = tup
+
     def execute_FIND(self, argument: str) -> bool:
         try:
             result: int = find_in_text_with_protection_from_braces(
@@ -538,6 +573,10 @@ class GameState:
             part_before: str = self.current_field[:result]
             part_after: str = self.current_field[result + len(argument) :]
 
+            self.try_relocate_start_of_command_on_removal(
+                len(part_before), len(argument)
+            )
+
             self.current_field = part_before + part_after
 
             self.beginning_cursor = self.ending_cursor = len(part_before)
@@ -550,6 +589,10 @@ class GameState:
         part_before: str = self.current_field[: self.beginning_cursor]
         part_after: str = self.current_field[self.ending_cursor :]
 
+        self.try_relocate_start_of_command_on_removal(
+            len(part_before), self.ending_cursor - self.beginning_cursor
+        )
+
         self.current_field = part_before + part_after
 
         self.beginning_cursor = self.ending_cursor = len(part_before)
@@ -559,13 +602,19 @@ class GameState:
     def execute_REPLACE(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
         if argument.strip() == "SELF":
-            assert self.current_command_bounds is not None
-            b = self.current_command_bounds
-            argument = self.current_field[b[0] : b[1]]
+            assert self.current_command_beg_and_text is not None
+            argument = self.current_command_beg_and_text[1]
 
         try:
             part_before: str = self.current_field[: self.beginning_cursor]
             part_after: str = self.current_field[self.ending_cursor :]
+
+            self.try_relocate_start_of_command_on_removal(
+                len(part_before), self.ending_cursor - self.beginning_cursor
+            )
+            self.try_relocate_start_of_command_on_insertion(
+                len(part_before), len(argument)
+            )
 
             self.current_field = part_before + argument + part_after
 
@@ -613,12 +662,13 @@ class GameState:
     def execute_INSERT(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
         if argument.strip() == "SELF":
-            assert self.current_command_bounds is not None
-            b = self.current_command_bounds
-            argument = self.current_field[b[0] : b[1]]
+            assert self.current_command_beg_and_text is not None
+            argument = self.current_command_beg_and_text[1]
 
         first_part: str = self.current_field[: self.beginning_cursor]
         last_part: str = self.current_field[self.beginning_cursor :]
+
+        self.try_relocate_start_of_command_on_insertion(len(first_part), len(argument))
 
         self.current_field = first_part + argument + last_part
 
@@ -629,12 +679,13 @@ class GameState:
     def execute_APPEND(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
         if argument.strip() == "SELF":
-            assert self.current_command_bounds is not None
-            b = self.current_command_bounds
-            argument = self.current_field[b[0] : b[1]]
+            assert self.current_command_beg_and_text is not None
+            argument = self.current_command_beg_and_text[1]
 
         first_part: str = self.current_field[: self.ending_cursor]
         last_part: str = self.current_field[self.ending_cursor :]
+
+        self.try_relocate_start_of_command_on_insertion(len(first_part), len(argument))
 
         self.current_field = first_part + argument + last_part
         return True

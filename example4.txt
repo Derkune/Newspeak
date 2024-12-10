@@ -2,6 +2,8 @@
 
 {FIND|i|SEEK|EOF|APPEND|xxx|ONCE}
 
+{FIND|i|FIND|+3|ONCE}
+
 ~~~~~~~~~~~~~~~~~
 AAA
 

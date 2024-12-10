@@ -57,8 +57,6 @@ KEYWORDS_WITH_0_ARGS: Set[LanguageKeywords] = {
 class SEEK_ARGS(enum.Enum):
     SOL: int = enum.auto()  # Start of line
     EOL: int = enum.auto()  # End of line
-    CL: int = enum.auto()  # 1 char left
-    CR: int = enum.auto()  # 1 char right
     SOF: int = enum.auto()  # Start of file
     EOF: int = enum.auto()  # End of file
 
@@ -79,6 +77,17 @@ def parse_enum(string: str, enum_type: type[enum.Enum]) -> enum.Enum:
             return member
 
     raise WrongKeywordException()
+
+
+def parse_SEEK_arg(input: Union[str, SEEK_ARGS]) -> Union[str, SEEK_ARGS]:
+    if isinstance(input, SEEK_ARGS):
+        return input
+
+    try:
+        return cast(SEEK_ARGS, parse_enum(input, SEEK_ARGS))
+    except:
+        _ = int(input)
+        return input
 
 
 def get_first_encountered_braces(text: str) -> Tuple[str, str, str]:
@@ -293,7 +302,7 @@ def parse_unpacked(unpacked: list) -> ParsedCommand:
             parts.append(keyword)
         except:
             try:
-                move_arg: SEEK_ARGS = cast(SEEK_ARGS, parse_enum(text, SEEK_ARGS))
+                move_arg: Union[str, SEEK_ARGS] = parse_SEEK_arg(text)
                 parts.append(move_arg)
             except:
                 parts.append(text)
@@ -332,7 +341,8 @@ def verify_command(command: ParsedCommand) -> None:
             assert part2, "No empty arguments!"
 
         if part1 is LanguageKeywords.SEEK:
-            assert isinstance(part2, SEEK_ARGS)
+            assert isinstance(part2, str) or isinstance(part2, SEEK_ARGS)
+            _ = parse_SEEK_arg(part2)
 
         if part1 in KEYWORDS_WITH_0_ARGS:
             assert isinstance(
@@ -345,7 +355,7 @@ def verify_command(command: ParsedCommand) -> None:
             ), f"Argument {part2} is not for any command!"
 
             assert (
-                part1 in KEYWORDS_WITH_STR_ARG
+                part1 in KEYWORDS_WITH_STR_ARG or part1 is LanguageKeywords.SEEK
             ), f"Argument {part2} is not for a suitable command, instead {part1}!"
 
         if isinstance(part2, SEEK_ARGS):
@@ -453,7 +463,8 @@ class GameState:
         if current_command_part not in KEYWORDS_WITH_0_ARGS:
             arg = self.current_command.parts[self.current_command_part_idx + 1]
             if current_command_part is LanguageKeywords.SEEK:
-                assert isinstance(arg, SEEK_ARGS)
+                assert isinstance(arg, str) or isinstance(arg, SEEK_ARGS)
+                _ = parse_SEEK_arg(arg)
             else:
                 assert isinstance(arg, str)
 
@@ -488,7 +499,7 @@ class GameState:
             assert isinstance(argument, str)
             return self.execute_REPLACE(argument)
         elif command is LanguageKeywords.SEEK:
-            assert isinstance(argument, SEEK_ARGS)
+            assert argument is not None
             return self.execute_SEEK(argument)
         elif command is LanguageKeywords.INSERT:
             assert isinstance(argument, str)
@@ -559,7 +570,7 @@ class GameState:
         except ValueError:
             return False
 
-    def execute_SEEK(self, argument: SEEK_ARGS) -> bool:
+    def execute_SEEK(self, argument: Union[str, SEEK_ARGS]) -> bool:
         to_set: int
         if argument is SEEK_ARGS.SOL:
             to_set = (
@@ -571,16 +582,20 @@ class GameState:
                 to_set = self.current_field.index("\n", self.ending_cursor)
             except:
                 to_set = len(self.current_field)
-        elif argument is SEEK_ARGS.CL:
-            to_set = self.beginning_cursor - 1
-        elif argument is SEEK_ARGS.CR:
-            to_set = self.ending_cursor + 1
         elif argument is SEEK_ARGS.SOF:
             to_set = 0
         elif argument is SEEK_ARGS.EOF:
             to_set = len(self.current_field)
         else:
-            raise NotImplementedError()
+            assert isinstance(argument, str)
+
+            to_int: int = int(argument)
+            if to_int > 0:
+                to_set = self.ending_cursor + to_int
+            elif to_int < 0:
+                to_set = self.beginning_cursor + to_int
+            else:
+                return True
 
         to_set = max(0, to_set)
         to_set = min(len(self.current_field), to_set)

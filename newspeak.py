@@ -35,6 +35,8 @@ class LanguageKeywords(enum.Enum):
 
     COMMENT: int = enum.auto()
 
+    ONCE: int = enum.auto()
+
 
 KEYWORDS_WITH_STR_ARG: Set[LanguageKeywords] = {
     LanguageKeywords.FIND,
@@ -43,6 +45,12 @@ KEYWORDS_WITH_STR_ARG: Set[LanguageKeywords] = {
     LanguageKeywords.INSERT,
     LanguageKeywords.APPEND,
     LanguageKeywords.COMMENT,
+}
+
+
+KEYWORDS_WITH_0_ARGS: Set[LanguageKeywords] = {
+    LanguageKeywords.DELETE,
+    LanguageKeywords.ONCE,
 }
 
 
@@ -315,7 +323,7 @@ def verify_command(command: ParsedCommand) -> None:
 
     if len(command.parts) == 1:
         assert (
-            command.parts[0] == LanguageKeywords.DELETE
+            command.parts[0] in KEYWORDS_WITH_0_ARGS
         ), f"Command {command.parts[0]} should have an argument!"
 
     for part1, part2 in zip(command.parts, command.parts[1:]):
@@ -326,7 +334,7 @@ def verify_command(command: ParsedCommand) -> None:
         if part1 is LanguageKeywords.SEEK:
             assert isinstance(part2, SEEK_ARGS)
 
-        if part1 is LanguageKeywords.DELETE:
+        if part1 in KEYWORDS_WITH_0_ARGS:
             assert isinstance(
                 part2, LanguageKeywords
             ), f"Command {part1} should have no arguments!"
@@ -442,7 +450,7 @@ class GameState:
         assert isinstance(current_command_part, LanguageKeywords)
 
         command_argument: Union[str, SEEK_ARGS, None] = None
-        if current_command_part is not LanguageKeywords.DELETE:
+        if current_command_part not in KEYWORDS_WITH_0_ARGS:
             arg = self.current_command.parts[self.current_command_part_idx + 1]
             if current_command_part is LanguageKeywords.SEEK:
                 assert isinstance(arg, SEEK_ARGS)
@@ -489,7 +497,9 @@ class GameState:
             assert isinstance(argument, str)
             return self.execute_APPEND(argument)
         elif command is LanguageKeywords.COMMENT:
-            return self.execute_COMMENT(argument)
+            return False
+        elif command is LanguageKeywords.ONCE:
+            return False
         else:
             raise NotImplementedError()
 
@@ -552,9 +562,10 @@ class GameState:
     def execute_SEEK(self, argument: SEEK_ARGS) -> bool:
         to_set: int
         if argument is SEEK_ARGS.SOL:
-            to_set = find_char_backwards(
-                self.current_field, self.beginning_cursor - 1, "\n"
-            ) + 1
+            to_set = (
+                find_char_backwards(self.current_field, self.beginning_cursor - 1, "\n")
+                + 1
+            )
         elif argument is SEEK_ARGS.EOL:
             try:
                 to_set = self.current_field.index("\n", self.ending_cursor)
@@ -599,9 +610,6 @@ class GameState:
 
         self.current_field = first_part + argument + last_part
         return True
-
-    def execute_COMMENT(self, argument: Any) -> bool:
-        return False
 
     def advance_execution(
         self, command: LanguageKeywords, argument: Union[None, SEEK_ARGS, str]

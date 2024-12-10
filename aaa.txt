@@ -25,17 +25,27 @@ AQWEB
 
 {SEEK|EOF|APPEND|#y#|FIND|doesn't exist}
 
-{SEEK|SOF|FIND|i|INSERT|~|SEEK|EOL|APPEND|$|SEEK|SOL|INSERT|#x#}
+{SEEK|SOF|FIND|i|INSERT|~|SEEK|SOL|FIND|@|DELETE|SEEK|EOL|APPEND|@$|SEEK|SOF|INSERT|#x#}
 
 
 
-{SEEK|EOF|APPEND|{SEEK|SOF|FIND|i|INSERT|~|SEEK|EOL|APPEND|$|SEEK|SOL|INSERT|#x#}|FIND|doesn't exist}
+
+~iiiii@$
+
+~@1iiii$
+~1iiii@$
+
+~1@iiii$
+~`@0iii$
 
 
 
-~iiiii#$
-~
 
+{FIND|i@|REPLACE|@i}
+{FIND|~@|REPLACE|~1|FIND|$|INSERT|@}
+{FIND|1@i|REPLACE|`@0}
+{FIND|~`@|REPLACE|~1|FIND|$|INSERT|@}
+{FIND|0@i|REPLACE|@1}
+{FIND|0`@|REPLACE|@1}
+{FIND|1`@|REPLACE|`@0}
 
-
-{FIND|i#|REPLACE|#i}

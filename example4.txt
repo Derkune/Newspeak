@@ -1,8 +1,6 @@
 {FIND|A|DELETE|SEEK|EOL|APPEND|i}
 
-{FIND|i|SEEK|EOF|APPEND|xxx|ONCE}
 
-{FIND|i|SEEK|+3|ONCE}
 
 ~~~~~~~~~~~~~~~~~
 AAA

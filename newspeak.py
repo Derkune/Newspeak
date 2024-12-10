@@ -204,7 +204,7 @@ ADDD {CCCC} CCCC {DDDD}  D
 pass
 
 
-def unescape_unprotected_by_braces(input: str) -> str:
+def unescape_those_unprotected_by_braces(input: str) -> str:
     braces_nesting: int = 0
     previous_char: str = ""
 
@@ -225,7 +225,7 @@ def unescape_unprotected_by_braces(input: str) -> str:
     return "".join(to_output)
 
 
-bbb = unescape_unprotected_by_braces("abc\\|de{xyz\\|ghj}\\}\\{}")
+bbb = unescape_those_unprotected_by_braces("abc\\\\\\|de{xyz\\\\|ghj}\\\\}\\{}")
 pass
 
 
@@ -557,7 +557,7 @@ class GameState:
         return True
 
     def execute_REPLACE(self, argument: str) -> bool:
-        argument = unescape_unprotected_by_braces(argument)
+        argument = unescape_those_unprotected_by_braces(argument)
         try:
             part_before: str = self.current_field[: self.beginning_cursor]
             part_after: str = self.current_field[self.ending_cursor :]
@@ -606,7 +606,7 @@ class GameState:
         return True
 
     def execute_INSERT(self, argument: str) -> bool:
-        argument = unescape_unprotected_by_braces(argument)
+        argument = unescape_those_unprotected_by_braces(argument)
 
         first_part: str = self.current_field[: self.beginning_cursor]
         last_part: str = self.current_field[self.beginning_cursor :]
@@ -618,7 +618,7 @@ class GameState:
         return True
 
     def execute_APPEND(self, argument: str) -> bool:
-        argument = unescape_unprotected_by_braces(argument)
+        argument = unescape_those_unprotected_by_braces(argument)
 
         first_part: str = self.current_field[: self.ending_cursor]
         last_part: str = self.current_field[self.ending_cursor :]

@@ -558,6 +558,11 @@ class GameState:
 
     def execute_REPLACE(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
+        if argument.strip() == "SELF":
+            assert self.current_command_bounds is not None
+            b = self.current_command_bounds
+            argument = self.current_field[b[0] : b[1]]
+
         try:
             part_before: str = self.current_field[: self.beginning_cursor]
             part_after: str = self.current_field[self.ending_cursor :]
@@ -607,6 +612,10 @@ class GameState:
 
     def execute_INSERT(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
+        if argument.strip() == "SELF":
+            assert self.current_command_bounds is not None
+            b = self.current_command_bounds
+            argument = self.current_field[b[0] : b[1]]
 
         first_part: str = self.current_field[: self.beginning_cursor]
         last_part: str = self.current_field[self.beginning_cursor :]
@@ -619,6 +628,10 @@ class GameState:
 
     def execute_APPEND(self, argument: str) -> bool:
         argument = unescape_those_unprotected_by_braces(argument)
+        if argument.strip() == "SELF":
+            assert self.current_command_bounds is not None
+            b = self.current_command_bounds
+            argument = self.current_field[b[0] : b[1]]
 
         first_part: str = self.current_field[: self.ending_cursor]
         last_part: str = self.current_field[self.ending_cursor :]

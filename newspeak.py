@@ -526,7 +526,7 @@ class GameState:
         if (
             self.current_command_beg_and_text[0]
             + len(self.current_command_beg_and_text[1])
-            >= len_of_part_before_removed
+            > len_of_part_before_removed
         ):
             assert (
                 self.current_command_beg_and_text[0]

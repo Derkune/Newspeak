@@ -44,8 +44,8 @@ Full list of commands for the interactive Newspeak interpreter:
 ------
 
 Full list of Newspeak language keywords:
- - FIND|arg: finds "arg" in text, starting from after the end of the current command. If finds, sets starting and ending cursors to the edges of the argument. If doesn't find, fails the current command list.
- - REMOVE|arg: finds "arg" between the current starting and ending cursors. If finds, deletes this text from the field. If doesn't find, fails the current command list.
+ - FIND|arg: finds the argument in text, starting from after the end of the current command. If finds, sets starting and ending cursors to the edges of the argument. If doesn't find, fails the current command list.
+ - REMOVE|arg: finds the argument between the current starting and ending cursors. If finds, deletes this text from the field. If doesn't find, fails the current command list.
  - DELETE: Has no argument. Simply deletes everything between current starting and ending cursors. Always succeeds.
  - REPLACE|arg: replaces everything between current starting and ending cursors with the argument. Always succeeds. Can accept SELF.
  - INSERT|arg: inserts the argument at the current starting cursor. Always succeeds. Can accept SELF.

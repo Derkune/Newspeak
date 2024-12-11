@@ -48,10 +48,10 @@ Full list of Newspeak language keywords:
  - REMOVE|arg: finds "arg" between the current starting and ending cursors. If finds, deletes this text from the field. If doesn't find, fails the current command list.
  - DELETE: Has no argument. Simply deletes everything between current starting and ending cursors. Always succeeds.
  - REPLACE|arg: replaces everything between current starting and ending cursors with the argument. Always succeeds. Can accept SELF.
- - INSERT|arg: inserts the arg at the current starting cursor. Always succeeds. Can accept SELF.
- - APPEND|arg: inserts the arg at the current ending cursor. Always succeeds. Can accept SELF.
+ - INSERT|arg: inserts the argument at the current starting cursor. Always succeeds. Can accept SELF.
+ - APPEND|arg: inserts the argument at the current ending cursor. Always succeeds. Can accept SELF.
  - COMMENT|arg: does nothing. Always fails. Useful for commenting your code with text that shouldn't influence command flow.
- - ONCE|arg: does nothing. Always fails. Useful for making commands one-time-use-only.
+ - ONCE: does nothing. Accepts no arguments. Always fails. Useful for making commands one-time-use-only.
  - SEEK|arg: moves the starting and ending cursors to coincide according to arg. Arg can take one of the following forms:
  - - SOL: start of line, relative to current beginning cursor.
    - EOL: end of line, relative to current ending cursor.

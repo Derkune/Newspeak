@@ -61,5 +61,5 @@ Full list of Newspeak language keywords:
    - - If positive, moves the ending cursor by n characters right and beginning cursor to coincide with it.
      - If negative, moves the starting cursor by n charactersleft and ending cursor to coincide with it.
      - If 0, does nothing.
- - Finally, arguments to REPLACE, INSERT and APPEND can be SELF. In this case, the text that is inserted in these commands is the current command's very text.
+ - Finally, arguments to REPLACE, INSERT and APPEND can be SELF. In this case, the text that is inserted with these commands is the current command's very text.
 

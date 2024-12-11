@@ -6,6 +6,8 @@ To run Newspeak, launch with python newspeak.py with argument --run program.txt.
 
 Newspeak was created with python 3.11.8, the further from this version the less likely it will run.
 
+-----
+
 Newspeak operates on lists of commands, with some commands accepting an argument. Here is an example of a command list:
 
 `{FIND|deceased|REPLACE|born}`

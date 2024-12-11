@@ -726,7 +726,13 @@ def main() -> None:
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Toy esolang")
     parser.add_argument(
-        "--run", action="store", help="Run a script", required=True, nargs=1, type=Path
+        "--run",
+        action="store",
+        help="Run a script",
+        required=True,
+        nargs=1,
+        type=Path,
+        metavar="SCRIPT_PATH",
     )
     args = parser.parse_args()
 

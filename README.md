@@ -65,3 +65,7 @@ Full list of Newspeak language keywords:
      - If 0, does nothing.
  - Finally, arguments to REPLACE, INSERT and APPEND can be SELF. In this case, the text that is inserted with these commands is the current command's very text.
 
+-------
+
+When working with this language, I found out many programs devolve into huge one-liners that need careful manual assembly. This problem is being looked into.
+

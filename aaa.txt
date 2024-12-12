@@ -29,23 +29,3 @@ AQWEB
 
 
 
-
-~iiiii@$
-
-~@1iiii$
-~1iiii@$
-
-~1@iiii$
-~`@0iii$
-
-
-
-
-{FIND|i@|REPLACE|@i}
-{FIND|~@|REPLACE|~1|FIND|$|INSERT|@}
-{FIND|1@i|REPLACE|`@0}
-{FIND|~`@|REPLACE|~1|FIND|$|INSERT|@}
-{FIND|0@i|REPLACE|@1}
-{FIND|0`@|REPLACE|@1}
-{FIND|1`@|REPLACE|`@0}
-

@@ -1,9 +1,29 @@
-{SEEK|EOF|APPEND|{SEEK|SOF|FIND|$|INSERT|{***}}|ONCE}
 
-{FIND|i|SEEK|SOL|INSERT|$|SEEK|EOL|APPEND|@#|FIND|i|INSERT|SELF|ONCE}
 
-~~~~~~~~~
-iii
+{FIND|i#|REPLACE|#i}
+{FIND|@#i|REPLACE|@#1}
+{FIND|@#1|REPLACE|@1|FIND|$|INSERT|#}
+{FIND|0#i|REPLACE|#1}
+{FIND|1#i|REPLACE|#`0}
+{FIND|0#`|REPLACE|#1}
+{FIND|1#`|REPLACE|#`0}
+{FIND|@#`|REPLACE|@1|FIND|$|INSERT|#}
 
-iiii
-ii
+
+@iiiii#$
+
+@i#iiii$
+@#1iiii$
+
+@1iiii#$
+
+@1i#iii$
+@1#`iii$
+@#`0iii$
+@#10iii$
+
+@10iii#$
+
+
+
+

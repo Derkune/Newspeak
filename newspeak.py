@@ -141,44 +141,65 @@ def find_char_backwards(in_str: str, starting_from_idx: int, ch: str):
 
 
 def find_in_text_with_protection_from_braces(
-    s: str, to_find: str, beg: int, end: int
+    text: str, searching_for_string: str, beg: int, end: int
 ) -> int:
-    assert to_find != ""
-    assert s != ""
+    assert searching_for_string != ""
+    assert text != ""
 
-    if contains_unescaped_special_chars(to_find):
-        return s.index(to_find, beg, end)
+    if contains_unescaped_special_chars(searching_for_string):
+        return text.index(searching_for_string, beg, end)
 
-    brace_nesting: int = 0
-    current_idx_in_tofind: int = 0
-    previous_char: str = ""
-    match_starting_pos: int = -1
-    for idx, char in enumerate(s):
-        if char == "{" and previous_char != "\\":
-            brace_nesting += 1
-        if char == "}" and previous_char != "\\":
-            brace_nesting -= 1
+    escaped_text = re.sub(r"\\([{}])", r"\0\0", text)
+    pattern = re.compile(re.escape(searching_for_string))
 
-        previous_char = char
-
-        if idx < beg:
+    for match in pattern.finditer(escaped_text):
+        if match.start() < beg or match.end() > end:
             continue
-        if idx >= end:
-            raise ValueError()
 
-        if char == to_find[current_idx_in_tofind] and brace_nesting <= 0:
-            current_idx_in_tofind += 1
-            if match_starting_pos < 0:
-                match_starting_pos = idx
-        else:
-            current_idx_in_tofind = 0
-            match_starting_pos = -1
+        if encountered_unmatched_unproteted_brace(escaped_text, match.end()):
+            continue
 
-        if current_idx_in_tofind >= len(to_find):
-            assert match_starting_pos >= 0
-            return match_starting_pos
+        if encountered_unmatched_unproteted_brace_backwards(escaped_text, match.end()):
+            continue
+
+        return match.start()
 
     raise ValueError()
+
+
+def encountered_unmatched_unproteted_brace(text: str, starting_from: int) -> bool:
+    previous_char: str = ""
+    brace_nesting: int = 0
+    for char in text[starting_from:]:
+        if char == "}" and previous_char != "\\":
+            if not brace_nesting:
+                return True
+            brace_nesting -= 1
+        if char == "{" and previous_char != "\\":
+            brace_nesting += 1
+        previous_char = char
+    return False
+
+
+def encountered_unmatched_unproteted_brace_backwards(
+    text: str, starting_from: int
+) -> bool:
+    brace_nesting: int = 0
+    for char_idx in range(starting_from - 1, -1, -1):
+        char: str = text[char_idx]
+        one_before_char: str = ""
+        if char_idx > 0:
+            one_before_char = text[char_idx - 1]
+
+        if one_before_char != "\\":
+            if char == "{":
+                if not brace_nesting:
+                    return True
+                brace_nesting += 1
+            if char == "}":
+                brace_nesting -= 1
+
+    return False
 
 
 def contains_unescaped_special_chars(text: str) -> bool:
@@ -195,10 +216,10 @@ def contains_unescaped_special_chars(text: str) -> bool:
 
 aaa = find_in_text_with_protection_from_braces(
     bbb := """
-ADDD {CCCC} CCCC {DDDD}  D
+AAA {CCCC} {{C}} {DDDD}  D C
 """,
-    "{D",
-    4,
+    "C",
+    0,
     255,
 )
 pass
@@ -705,6 +726,10 @@ class GameState:
             self.execution_report.append(
                 f"Command {command} executed, was the last one in the list!"
             )
+            self.beginning_cursor = 0
+            self.ending_cursor = 0
+            self.current_command = None
+            self.current_command_beg_and_text = None
 
     def print_execution_report(self) -> None:
         for line in self.execution_report:
@@ -720,6 +745,19 @@ class GameState:
                 print(f"Written current field state to {split[1]}!")
         except Exception as e:
             print(f"Trying to write state of current field, error: {e}")
+
+    def print_snapshot(self) -> None:
+        field: str = self.current_field
+        beg, end = self.beginning_cursor, self.ending_cursor
+        if beg == end:
+            part_before = field[:beg]
+            part_after = field[beg:]
+            print(part_before + "‹" + part_after)
+        else:
+            part_before = field[:beg]
+            part_after = field[end:]
+            part_inside = field[beg:end]
+            print(part_before + "‹" + part_inside + "›" + part_after)
 
 
 def main() -> None:
@@ -769,8 +807,7 @@ def event_loop(file: Path) -> None:
             GAME_STATE.execute_state()
             GAME_STATE.print_execution_report()
         elif command == "snap":
-            print(GAME_STATE.current_field)
-            print(f"Cursors: {(GAME_STATE.beginning_cursor, GAME_STATE.ending_cursor)}")
+            GAME_STATE.print_snapshot()
         elif command == "help":
             print(
                 """

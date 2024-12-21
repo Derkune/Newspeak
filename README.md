@@ -46,21 +46,21 @@ Full list of commands for the interactive Newspeak interpreter:
 ------
 
 Full list of Newspeak language keywords:
- - FIND|arg: finds the argument in text, starting from after the end of the current command. If finds, sets starting and ending cursors to the edges of the argument. If doesn't find, fails the current command list.
- - REMOVE|arg: finds the argument between the current starting and ending cursors. If finds, deletes this text from the field. If doesn't find, fails the current command list.
- - DELETE: Has no argument. Simply deletes everything between current starting and ending cursors. Always succeeds.
- - REPLACE|arg: replaces everything between current starting and ending cursors with the argument. Always succeeds. Can accept SELF.
- - INSERT|arg: inserts the argument at the current starting cursor. Always succeeds. Can accept SELF.
- - APPEND|arg: inserts the argument at the current ending cursor. Always succeeds. Can accept SELF.
+ - FIND|arg: finds the argument in text, starting from after the end of the current selection. If finds, sets selection cursors to the edges of the argument. If doesn't find, fails the current command list.
+ - REMOVE|arg: finds the argument inside the current selection. If finds, deletes this text from the field. If doesn't find, fails the current command list.
+ - DELETE: Has no argument. Simply deletes everything inside the current selection. Always succeeds.
+ - REPLACE|arg: replaces everything inside the current selection with the argument. Always succeeds. Can accept SELF.
+ - INSERT|arg: inserts the argument at the starting cursor of current selection. Always succeeds. Can accept SELF.
+ - APPEND|arg: inserts the argument at the ending cursor of current selection. Always succeeds. Can accept SELF.
  - ONCE: does nothing. Accepts no arguments. Always fails. Useful for making commands one-time-use-only.
- - SEEK|arg: moves the starting and ending cursors to coincide according to arg. Arg can take one of the following forms:
+ - SEEK|arg: moves the selection cursors to coincide according to arg. Arg can take one of the following forms:
  - - SOL: start of line, relative to current beginning cursor.
    - EOL: end of line, relative to current ending cursor.
    - SOF: start of file.
    - EOF: end of file.
    - n: can be any integer.
-   - - If positive, moves the ending cursor by n characters right and beginning cursor to coincide with it.
-     - If negative, moves the starting cursor by n characters left and ending cursor to coincide with it.
+   - - If positive, moves the ending cursor of selection by n characters right and beginning cursor to coincide with it.
+     - If negative, moves the starting cursor of selection by n characters left and ending cursor to coincide with it.
      - If 0, does nothing.
  - Finally, arguments to REPLACE, INSERT and APPEND can be SELF. In this case, the text that is inserted with these commands is the current command's very text.
 

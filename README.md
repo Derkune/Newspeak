@@ -8,6 +8,8 @@ Newspeak was created with python 3.11.8, the further from this version the less 
 
 -----
 
+TODO: EXPLAIN ESCAPING
+
 Newspeak operates on lists of commands, with some commands accepting an argument. Here is an example of a command list:
 
 `{FIND|deceased|REPLACE|born}`

@@ -1,5 +1,5 @@
 <Binary counting. The file contains lines of lovercase i. Replace each...>
-<...line with 'i's with the binary count of how many 'i's are there.>
+<...'i'-filled line with the binary count of how many 'i's are in it.>
 
 <The program works by forming lines of special format and repeatedly applying...>
 <...substitution rules on them to perform binary counting.>
@@ -15,7 +15,7 @@
 {SEEK|EOF|APPEND|
 	<This part lives at the end of the file. It repeatedly inserts the main body of the...>
 	<..application, lets it be executed, lets it detect when the computation is finished and...>
-	<...lets it disable this part when this happens.>
+	<...lets it disable this part when computation is finished.>
 
 	{SEEK|SOF|APPEND|
 		<Main body of the program.>
@@ -31,7 +31,7 @@
 		{FIND|0#$|REPLACE|0$}
 		{FIND|1#$|REPLACE|1$}
 
-		<This part detects when '#' reaches the start of the string and moves it back to...>
+		<This part detects when '#' reaches the start of the string and moves it back...>
 		<...to the end to continue computation.>
 
 		{FIND|@#`|REPLACE|@1|FIND|$|INSERT|#}

@@ -39,7 +39,7 @@ Full list of commands for the interactive Newspeak interpreter:
  - simply pressing Enter without entering any command will advance 1 turn of processing the current program and output the report on processing. The vast majority of progams need several steps to complete!
  - help will output this message.
  - stop, exit, quit, e, q are all aliases of each other. They stop the current interpeter session.
- - snap will output the current state of the field being processed.
+ - snap will output the current state of the board being processed.
  - output [file name with extension] will output the current state of the board to a file at the passed argument.
  - process will enter the intepreter into a processing mode. In this mode, processing turns will advance without the input from the editor. To stop it, enter s (as in stop) and press Enter.
 

@@ -865,7 +865,7 @@ def processing_mode(game_state: GameState) -> None:
             print("Processing turn (press 's' then Enter to stop)...")
             game_state.execute_state()
             game_state.print_execution_report()
-            time.sleep(0.2)
+            time.sleep(0.1)
 
     processing_thread = threading.Thread(target=process_turns)
     processing_thread.start()

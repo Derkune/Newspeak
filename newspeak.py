@@ -61,11 +61,6 @@ class SEEK_ARGS(enum.Enum):
     EOF: int = enum.auto()  # End of file
 
 
-def try_parse_int(s: str) -> int:
-    s = s.strip()
-    return int(s)
-
-
 class WrongKeywordException(Exception):
     pass
 
@@ -156,7 +151,7 @@ def find_in_text_with_protection_from_braces(
         if match.start() < beg or match.end() > end:
             continue
 
-        if encountered_unmatched_unproteted_brace(escaped_text, match.end()):
+        if encountered_unmatched_unprotected_brace(escaped_text, match.end()):
             continue
 
         if encountered_unmatched_unproteted_brace_backwards(escaped_text, match.end()):
@@ -167,7 +162,7 @@ def find_in_text_with_protection_from_braces(
     raise ValueError()
 
 
-def encountered_unmatched_unproteted_brace(text: str, starting_from: int) -> bool:
+def encountered_unmatched_unprotected_brace(text: str, starting_from: int) -> bool:
     previous_char: str = ""
     brace_nesting: int = 0
     for char in text[starting_from:]:
@@ -235,21 +230,6 @@ def unescape_those_unprotected_by_braces(input: str) -> str:
     return "".join(to_output)
 
 
-aaa = find_in_text_with_protection_from_braces(
-    bbb := """
-AAA {CCCC} {{C}} {DDDD}  D C
-""",
-    "C",
-    0,
-    255,
-)
-pass  # TODO: remove
-
-
-bbb = unescape_those_unprotected_by_braces("abc\\\\\\|de{xyz\\\\|ghj}\\\\}\\{}")
-pass  # TODO: remove
-
-
 def remove_newlines_inside_commands(text: str) -> str:
     assert text != ""
 
@@ -259,7 +239,7 @@ def remove_newlines_inside_commands(text: str) -> str:
     to_remove: list[int] = []
 
     for match in pattern.finditer(escaped_text):
-        if encountered_unmatched_unproteted_brace(
+        if encountered_unmatched_unprotected_brace(
             escaped_text, match.start()
         ) or encountered_unmatched_unproteted_brace_backwards(
             escaped_text, match.end()
@@ -274,14 +254,6 @@ def remove_newlines_inside_commands(text: str) -> str:
 
     acccumulated_string.append(text[last_removed_idx : len(text)])
     return "".join(acccumulated_string)
-
-
-def find_next_special_char(text: str) -> Tuple[str, int]:
-    for idx, char in enumerate(text):
-        if char == "{" or char == "}" or char == "|":
-            return char, idx
-
-    raise Exception()
 
 
 def unpack_command(s: str) -> list:

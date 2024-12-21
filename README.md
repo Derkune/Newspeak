@@ -67,6 +67,6 @@ Full list of Newspeak language keywords:
 -------
 
 Additional features of the language include:
- - Comments can be included in the program with \<angle brackets\>. They need to be paired and can't be nested for now. Comments are removed from the file before running it.
+ - Comments can be included in the program with \<angle brackets\>. Brackets need to be paired and can't be nested for now. Comments are removed from the file before running it.
  - Commands can include \\n newlines and \\t tabs for better readability. These characters are removed from commands before running the file.
 

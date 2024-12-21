@@ -52,7 +52,6 @@ Full list of Newspeak language keywords:
  - REPLACE|arg: replaces everything between current starting and ending cursors with the argument. Always succeeds. Can accept SELF.
  - INSERT|arg: inserts the argument at the current starting cursor. Always succeeds. Can accept SELF.
  - APPEND|arg: inserts the argument at the current ending cursor. Always succeeds. Can accept SELF.
- - COMMENT|arg: does nothing. Always fails. Useful for commenting your code with text that shouldn't influence command flow.
  - ONCE: does nothing. Accepts no arguments. Always fails. Useful for making commands one-time-use-only.
  - SEEK|arg: moves the starting and ending cursors to coincide according to arg. Arg can take one of the following forms:
  - - SOL: start of line, relative to current beginning cursor.
@@ -67,5 +66,7 @@ Full list of Newspeak language keywords:
 
 -------
 
-When working with this language, I found out many programs devolve into huge one-liners that need careful manual assembly. This problem is being looked into.
+Additional features of the language include:
+ - Comments can be included in the program with <angle brackets>. They need to be paired and can't be nested for now. Comments are removed from the file before running it.
+ - Commands can include \\n newlines and \\t tabs for better readability. These characters are removed from commands before running the file.
 

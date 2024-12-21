@@ -1,5 +1,5 @@
-{COMMENT|Outputs: YYY}
-{COMMENT|Really just a rude goldberg machine}
+<Outputs: YYY>
+<Really just a rude goldberg machine>
 
 {FIND|BBB|REPLACE|FI}
 {FIND|CCC|REPLACE|ND}

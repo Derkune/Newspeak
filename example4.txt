@@ -1,24 +1,24 @@
-{COMMENT|Binary counting. The file contains lines of lovercase i. Replace each...}
-{COMMENT|...line with 'i's with the binary count of how many 'i's are there.}
+<Binary counting. The file contains lines of lovercase i. Replace each...>
+<...line with 'i's with the binary count of how many 'i's are there.>
 
-{COMMENT|The program works by forming lines of special format and repeatedly applying...}
-{COMMENT|...substitution rules on them to perform binary counting.}
+<The program works by forming lines of special format and repeatedly applying...>
+<...substitution rules on them to perform binary counting.>
 
-{COMMENT|Line format for counters looks like this: @10`#i$. To explain each symbol:...}
-{COMMENT|... @ signifies the start of the line.}
-{COMMENT|... $ signifies the end of the line.}
-{COMMENT|... # signifies the position of current counting. It always moves from right to...}
-{COMMENT|...left, and then when getting to the beginning of the line - back to the end.}
-{COMMENT|... ` signifies the "carried" unit.}
-{COMMENT|... 1 and 0 are the digits of the currently computed binary number.}
+<Line format for counters looks like this: @10`#i$. To explain each symbol:...>
+<... @ signifies the start of the line.>
+<... $ signifies the end of the line.>
+<... # signifies the position of current counting. It always moves from right to...>
+<...left, and then when getting to the beginning of the line - back to the end.>
+<... ` signifies the "carried" unit.>
+<... 1 and 0 are the digits of the currently computed binary number.>
 
 {SEEK|EOF|APPEND|
-	{COMMENT|This part lives at the end of the file. It repeatedly inserts the main body of the...}
-	{COMMENT|..application, lets it be executed, lets it detect when the computation is finished and...}
-	{COMMENT|...lets it disable this part when this happens.}
+	<This part lives at the end of the file. It repeatedly inserts the main body of the...>
+	<..application, lets it be executed, lets it detect when the computation is finished and...>
+	<...lets it disable this part when this happens.>
 
 	{SEEK|SOF|APPEND|
-		{COMMENT|Main body of the program.}
+		<Main body of the program.>
 
 		{FIND|i#|REPLACE|#i}
 		{FIND|0#i|REPLACE|#1}
@@ -26,13 +26,13 @@
 		{FIND|0#`|REPLACE|#1}
 		{FIND|1#`|REPLACE|#`0}
 
-		{COMMENT|When exhausting all uncounted 'i's, this part '#', signifying the end of computation for this line.}
+		<When exhausting all uncounted 'i's, this part removes '#', signifying the end of computation for this line.>
 
 		{FIND|0#$|REPLACE|0$}
 		{FIND|1#$|REPLACE|1$}
 
-		{COMMENT|This part detects when '#' reaches the start of the string and moves it back to...}
-		{COMMENT|...to the end to continue computation.}
+		<This part detects when '#' reaches the start of the string and moves it back to...>
+		<...to the end to continue computation.>
 
 		{FIND|@#`|REPLACE|@1|FIND|$|INSERT|#}
 		{FIND|@#i|REPLACE|@1|FIND|$|INSERT|#}
@@ -42,12 +42,12 @@
 		{FIND|0#1|REPLACE|01|FIND|$|INSERT|#}
 		{FIND|0#0|REPLACE|00|FIND|$|INSERT|#}
 
-		{COMMENT|This part detects if the computation is completely finished and disables the last...}
-		{COMMENT|...command in the file by inserting 'ONCE' into it. The last part is the one which...}
-		{COMMENT|...repeatedly prepends the body to the beginning of the file.}
+		<This part detects if the computation is completely finished and disables the last...>
+		<...command in the file by inserting 'ONCE' into it. The last part is the one which...>
+		<...repeatedly prepends the body to the beginning of the file.>
 
-		{COMMENT|Detection of finished computation works by detecting when there are no longer symbols 'i' and '`'...}
-		{COMMENT|...in the file. Symbols '&' and '*' work as markings for when the previous menntioned are not found.}
+		<Detection of finished computation works by detecting when there are no longer symbols 'i' and '`'...>
+		<...in the file. Symbols '&' and '*' work as markings for when the previously menntioned symbols are not found.>
 
 		{SEEK|SOF|INSERT|&|FIND|i|SEEK|SOF|FIND|&|DELETE|ONCE}
 		{SEEK|SOF|INSERT|*|FIND|`|SEEK|SOF|FIND|*|DELETE|ONCE}
@@ -59,19 +59,17 @@
 			|ONCE
 		}
 
-		{COMMENT|Cleaning up marks '&' and '*'.}
+		<Cleaning up marks '&' and '*'.>
 		{SEEK|SOF|FIND|&|DELETE}
 		{SEEK|SOF|FIND|*|DELETE}
 	}
 	|ONCE
 }
 
-{COMMENT|Converting strings of 'i's into the needed format for computation.}
+<Converting strings of 'i's into the needed format for computation.>
 {FIND|i|INSERT|@|SEEK|EOL|APPEND|#$|SEEK|EOL|APPEND|SELF|ONCE}
 
 ~~~~~~~~~~~~~~
-
-
 
 iiiiii
 

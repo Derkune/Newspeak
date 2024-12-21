@@ -1,4 +1,4 @@
-{COMMENT|Sorting the letters A, B, C, D in alphabetical order}
+<Sorting the letters A, B, C, D in alphabetical order>
 
 {FIND|D|DELETE|SEEK|SOL|INSERT|d}
 {FIND|C|DELETE|SEEK|SOL|INSERT|c}

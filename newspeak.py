@@ -33,8 +33,6 @@ class LanguageKeywords(enum.Enum):
     INSERT: int = enum.auto()
     APPEND: int = enum.auto()
 
-    COMMENT: int = enum.auto()
-
     ONCE: int = enum.auto()
 
 
@@ -44,7 +42,6 @@ KEYWORDS_WITH_STR_ARG: Set[LanguageKeywords] = {
     LanguageKeywords.REPLACE,
     LanguageKeywords.INSERT,
     LanguageKeywords.APPEND,
-    LanguageKeywords.COMMENT,
 }
 
 
@@ -381,13 +378,33 @@ def verify_command(command: ParsedCommand) -> None:
             assert part1 is LanguageKeywords.SEEK
 
 
+def remove_comments(text: str) -> str:
+    accumulated_str: List[str] = []
+
+    nesting: int = 0
+    for char in text:
+        if char == "<":
+            nesting += 1
+        if char == ">":
+            nesting -= 1
+
+        if nesting != 0 and nesting != 1:
+            assert False, "Comments should have balanced <> marks and no nesting!"
+
+        if nesting == 0 and char != ">":
+            accumulated_str.append(char)
+
+    return "".join(accumulated_str)
+
+
 class GameState:
     def __init__(self, file: Path) -> None:
         print(f"GameState init, file: {file}")
         with file.open("r") as f_:
             self.program: str = f_.read()
 
-        self.current_field: str = remove_newlines_inside_commands(self.program)
+        removed_commands: str = remove_comments(self.program)
+        self.current_field: str = remove_newlines_inside_commands(removed_commands)
 
         self.beginning_cursor: int = 0
         self.ending_cursor: int = 0
@@ -406,6 +423,7 @@ class GameState:
     def set_ERROR_state(self, error_report: str) -> None:
         self.state = StatesOfGame.ERROR
         self.execution_report.append(error_report)
+        self.finished_running_for_automatic_processing = True
 
     def execute_state(self) -> None:
         self.execution_report = []
@@ -531,8 +549,6 @@ class GameState:
         elif command is LanguageKeywords.APPEND:
             assert isinstance(argument, str)
             return self.execute_APPEND(argument)
-        elif command is LanguageKeywords.COMMENT:
-            return False
         elif command is LanguageKeywords.ONCE:
             return False
         else:

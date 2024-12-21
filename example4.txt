@@ -1,29 +1,31 @@
 
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|APPEND|
+		{FIND|i#|REPLACE|#i}
+		{FIND|@#i|REPLACE|@#1}
+		{FIND|@#1|REPLACE|@1|FIND|$|INSERT|#}
+		{FIND|0#i|REPLACE|#1}
+		{FIND|1#i|REPLACE|#`0}
+		{FIND|0#`|REPLACE|#1}
+		{FIND|1#`|REPLACE|#`0}
+		{FIND|@#`|REPLACE|@1|FIND|$|INSERT|#}
 
-{FIND|i#|REPLACE|#i}
-{FIND|@#i|REPLACE|@#1}
-{FIND|@#1|REPLACE|@1|FIND|$|INSERT|#}
-{FIND|0#i|REPLACE|#1}
-{FIND|1#i|REPLACE|#`0}
-{FIND|0#`|REPLACE|#1}
-{FIND|1#`|REPLACE|#`0}
-{FIND|@#`|REPLACE|@1|FIND|$|INSERT|#}
+		{SEEK|SOF|INSERT|&|FIND|i|SEEK|SOF|FIND|&|DELETE|ONCE}
+		{SEEK|SOF|INSERT|*|FIND|`|SEEK|SOF|FIND|*|DELETE|ONCE}
+		{SEEK|SOF|FIND|*&|SEEK|EOF|SEEK|-1|FIND|\}|INSERT|\|ON|INSERT|CE
+			|SEEK|SOF|INSERT|
+				{SEEK|SOF|FIND|#|DELETE}
+				{SEEK|SOF|FIND|$|DELETE}
+			|ONCE
+		}
+		{SEEK|SOF|FIND|&|DELETE}
+		{SEEK|SOF|FIND|*|DELETE}
+	}
+|ONCE
+}
 
-
-@iiiii#$
-
-@i#iiii$
-@#1iiii$
-
-@1iiii#$
-
-@1i#iii$
-@1#`iii$
-@#`0iii$
-@#10iii$
-
-@10iii#$
+~~~~~~~~~~~~~~
 
 
 
-
+@ii#$

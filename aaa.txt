@@ -28,4 +28,14 @@ AQWEB
 {SEEK|SOF|FIND|i|INSERT|~|SEEK|SOL|FIND|@|DELETE|SEEK|EOL|APPEND|@$|SEEK|SOF|INSERT|#x#}
 
 
+@i#iiii$
+@#1iiii$
 
+@1iiii#$
+
+@1i#iii$
+@1#`iii$
+@#`0iii$
+@#10iii$
+
+@10iii#$

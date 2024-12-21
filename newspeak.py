@@ -214,17 +214,6 @@ def contains_unescaped_special_chars(text: str) -> bool:
     return False
 
 
-aaa = find_in_text_with_protection_from_braces(
-    bbb := """
-AAA {CCCC} {{C}} {DDDD}  D C
-""",
-    "C",
-    0,
-    255,
-)
-pass
-
-
 def unescape_those_unprotected_by_braces(input: str) -> str:
     braces_nesting: int = 0
     previous_char: str = ""
@@ -246,8 +235,45 @@ def unescape_those_unprotected_by_braces(input: str) -> str:
     return "".join(to_output)
 
 
+aaa = find_in_text_with_protection_from_braces(
+    bbb := """
+AAA {CCCC} {{C}} {DDDD}  D C
+""",
+    "C",
+    0,
+    255,
+)
+pass  # TODO: remove
+
+
 bbb = unescape_those_unprotected_by_braces("abc\\\\\\|de{xyz\\\\|ghj}\\\\}\\{}")
-pass
+pass  # TODO: remove
+
+
+def remove_newlines_inside_commands(text: str) -> str:
+    assert text != ""
+
+    escaped_text = re.sub(r"\\([{}])", r"\0\0", text)
+    pattern = re.compile("[\n\t]")
+
+    to_remove: list[int] = []
+
+    for match in pattern.finditer(escaped_text):
+        if encountered_unmatched_unproteted_brace(
+            escaped_text, match.start()
+        ) or encountered_unmatched_unproteted_brace_backwards(
+            escaped_text, match.end()
+        ):
+            to_remove.append(match.start())
+
+    acccumulated_string: list[str] = []
+    last_removed_idx: int = 0
+    for to_remove_idx in to_remove:
+        acccumulated_string.append(text[last_removed_idx:to_remove_idx])
+        last_removed_idx = to_remove_idx + 1
+
+    acccumulated_string.append(text[last_removed_idx : len(text)])
+    return "".join(acccumulated_string)
 
 
 def find_next_special_char(text: str) -> Tuple[str, int]:
@@ -389,7 +415,7 @@ class GameState:
         with file.open("r") as f_:
             self.program: str = f_.read()
 
-        self.current_field: str = self.program
+        self.current_field: str = remove_newlines_inside_commands(self.program)
 
         self.beginning_cursor: int = 0
         self.ending_cursor: int = 0
@@ -551,7 +577,7 @@ class GameState:
         ):
             assert (
                 self.current_command_beg_and_text[0]
-                > len_of_part_before_removed + len_of_removed_part
+                >= len_of_part_before_removed + len_of_removed_part
             )
             tup = self.current_command_beg_and_text
             tup = (tup[0] - len_of_removed_part, tup[1])
@@ -572,6 +598,8 @@ class GameState:
 
     def execute_FIND(self, argument: str) -> bool:
         try:
+            argument = unescape_those_unprotected_by_braces(argument)
+
             result: int = find_in_text_with_protection_from_braces(
                 self.current_field,
                 argument,
@@ -587,6 +615,8 @@ class GameState:
 
     def execute_REMOVE(self, argument: str) -> bool:
         try:
+            argument = unescape_those_unprotected_by_braces(argument)
+
             result: int = find_in_text_with_protection_from_braces(
                 self.current_field, argument, self.beginning_cursor, self.ending_cursor
             )

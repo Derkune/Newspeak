@@ -1,6 +1,7 @@
 <The file contains lines containing lowercase 'i's. Collapse sequences of 'i's into...>
 <...single 'i' without affecting the rest of the text.>
 
+<The symbol '#' signifies a string of 'i's being processed.>
 
 {FIND|i|SEEK|SOF|INSERT|
 	{FIND|i|REPLACE|#|ONCE}

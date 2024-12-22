@@ -2,9 +2,11 @@
 <...and that one that is - to be not surrounded.>
 <Example: "Test sentence with input 1, [input] 2, input 3." -> "Test sentence with [input] 1, input 2, [input] 3."
 
-{FIND|[input]|REPLACE|@in#put$}
+<The target word in filled with some junk symbols to ensure the order of substitutiion.>
+
+{FIND|[input]|REPLACE|in#put}
 {FIND|input|REPLACE|[in*put]}
-{FIND|@in#put$|REPLACE|input}
+{FIND|#|DELETE}
 {FIND|*|DELETE}
 
 ~~~~~

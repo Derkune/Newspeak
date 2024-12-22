@@ -1,15 +1,23 @@
 <Lines in this file contain binary numbers. Divide them by 2, rounding down.>
 
+<The main body of the program lives at the end of the file.>
 {SEEK|EOF|APPEND|
 	{SEEK|SOF|FIND|0##|DELETE}
 	{SEEK|SOF|FIND|1##|DELETE}
 	{SEEK|SOF|FIND|0#|DELETE}
 	{SEEK|SOF|FIND|1#|DELETE}
+
+	<Ending the computation by removing % signs.>
 	{SEEK|SOF|FIND|%%|DELETE}
+	{SEEK|SOF|FIND|%1|REPLACE|1}
+	{SEEK|SOF|FIND|%0|REPLACE|0}
+
+	<This last command ensures that the numbers 0 and 1 divide to 2.>
 	{SEEK|SOF|FIND|%|REPLACE|0}
 |ONCE
 }
 
+<Finding binary numbers and signifying their start and end with % and #.>
 {FIND|1|SEEK|SOL|INSERT|%|SEEK|EOL|INSERT|#|APPEND|SELF|ONCE}
 {FIND|0|SEEK|SOL|INSERT|%|SEEK|EOL|INSERT|#|APPEND|SELF|ONCE}
 
@@ -25,3 +33,7 @@
 0
 
 101010101
+
+1111
+
+11

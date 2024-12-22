@@ -1,6 +1,5 @@
 <The file contains lines containing lowercase 'i's. Collapse sequences of 'i's into...>
 <...single 'i' without affecting the rest of the text.>
-<aaa>
 
 
 {FIND|i|SEEK|SOF|INSERT|

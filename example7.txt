@@ -12,7 +12,7 @@
 	{SEEK|SOF|FIND|%1|REPLACE|1}
 	{SEEK|SOF|FIND|%0|REPLACE|0}
 
-	<This last command ensures that the numbers 0 and 1 divide to 2.>
+	<This last command ensures that the numbers 0 and 1 divide to 0.>
 	{SEEK|SOF|FIND|%|REPLACE|0}
 |ONCE
 }

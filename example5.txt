@@ -1,0 +1,21 @@
+<The file contains lines containing lowercase 'i's. Collapse sequences of 'i's into...>
+<...single 'i' without affecting the rest of the text.>
+
+
+
+{FIND|i|SEEK|SOF|INSERT|
+	{FIND|i|REPLACE|#|ONCE}
+	{FIND|#i|REPLACE|#}
+}
+{FIND|#|REPLACE|i}
+
+
+~~~~~~~~~
+
+1iiii22iii3i
+
+i1ii22
+
+i
+
+1iiiiiii2

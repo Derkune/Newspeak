@@ -1,5 +1,5 @@
 <Outputs: YYY>
-<Really just a rude goldberg machine>
+<Really just a rube goldberg machine>
 
 {FIND|BBB|REPLACE|FI}
 {FIND|CCC|REPLACE|ND}

@@ -1,0 +1,16 @@
+<Make the word "input" that isn't surrounded by square brackets to be surrounded, ...>
+<...and that one that is - to be not surrounded.>
+<Example: "Test sentence with input 1, [input] 2, input 3." -> "Test sentence with [input] 1, input 2, [input] 3."
+
+{FIND|[input]|REPLACE|@in#put$}
+{FIND|input|REPLACE|[in*put]}
+{FIND|@in#put$|REPLACE|input}
+{FIND|*|DELETE}
+
+~~~~~
+
+Test sentence with input 1, [input] 2, input 3.
+
+The team requested additional [input] from stakeholders to ensure all perspectives were included, emphasizing that every [input] would be valuable to the project's success.
+
+To enhance the user experience, the developers analyzed user input extensively and adjusted the system to better accommodate various types of input.

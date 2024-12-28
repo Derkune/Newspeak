@@ -1,11 +1,17 @@
-<This text has punctuation stripped. Place a period every 20 chars after an end of a word.>
+<
+This text has punctuation stripped. Place a period every 
+20 chars after an end of a word.
+>
 
 {FIND| |SEEK|SOL|APPEND|
 	#{SEEK|20|INSERT|#_C_|FIND| |SEEK|SOL|FIND|_C_|REPLACE|SELF|ONCE}
 |ONCE}
 
-<placing grid markings # each 20 chars>
-<_C_ is used to track the current execution position which allows to abort if there are no " " spaces left after the command.>
+<
+placing grid markings # each 20 chars.
+_C_ is used to track the current execution position which allows to abort if 
+there are no " " spaces left after the command.
+>
 
 {SEEK|EOF|APPEND|
 	^^^^^^^^^^^^^^^^^^^^{SEEK|SOF|FIND|#|REPLACE|
@@ -13,8 +19,10 @@
 	|ONCE}
 |ONCE}
 
-<Use the # grid markings and find the next " " space after them for period insertion.>
-<the command is padded with ^ chars to keep some seek inserts from inserting in the middle of a command.>
+<
+Use the # grid markings and find the next " " space after them for period insertion.
+the command is padded with ^ chars to keep some seek inserts from inserting in the middle of a command.
+>
 
 {SEEK|EOF|APPEND|
 	{SEEK|SOF|FIND|_C_|DELETE}

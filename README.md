@@ -68,6 +68,6 @@ Full list of Newspeak language keywords:
 
 Additional features of the language include:
  - Comments can be included in the program with \<angle brackets\>. They need to be paired and can't be nested for now. Comments are removed from the file before running it.
- - Commands can include newlines and tabs for better readability. These characters are removed from commands before running the file.
+ - Commands can include newlines and tabs for better readability. These characters are removed from commands before running the file. Pro tip: switch your code editor to use tabs for indentation. Turn on line wrap, while you're at it.
  - Command arguments can contain escaped characters \\{, \\}, and \\|. 
  - - When FIND, REMOVE, INSERT, APPEND, and REPLACE have an escaped special character, they turn it into the unescaped version for searching in text or inserting into text. If you want to find an escaped character or to insert an escaped character, escape it in the argument twice: \\\\|.

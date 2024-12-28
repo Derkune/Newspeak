@@ -1,0 +1,39 @@
+<This text has punctuation stripped. Place a period every 20 chars after an end of a word.>
+
+{FIND| |SEEK|SOL|APPEND|
+	#{SEEK|20|INSERT|#_C_|FIND| |SEEK|SOL|FIND|_C_|REPLACE|SELF|ONCE}
+|ONCE}
+
+<placing grid markings # each 20 chars>
+<_C_ is used to track the current execution position which allows to abort if there are no " " spaces left after the command.>
+
+{SEEK|EOF|APPEND|
+	^^^^^^^^^^^^^^^^^^^^{SEEK|SOF|FIND|#|REPLACE|
+		{FIND|#|DELETE|FIND| |INSERT|.|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<Use the # grid markings and find the next " " space after them for period insertion.>
+<the command is padded with ^ chars to keep some seek inserts from inserting in the middle of a command.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|FIND|_C_|DELETE}
+|ONCE}
+
+<Cleaning up the _C_ marker>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|FIND| |SEEK|EOL|APPEND|.|SEEK|-1|FIND|..|REPLACE|.|ONCE}
+|ONCE}
+
+<Appending the last period to the end of the line making sure it's not doubled.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|FIND|^|DELETE}
+|ONCE}
+
+<Cleaning up the ^s.>
+
+~~~~~~~
+
+Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim w veniam quis

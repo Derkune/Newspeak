@@ -1,0 +1,25 @@
+<Replace each line with the last word in that line.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|FIND| |APPEND|\|ONCE\}|SEEK|SOL|INSERT|\{FIND\|}
+|ONCE}
+
+<Using the " " space as a marker for where a word ends, and remove the part before the space with...>
+<...a self-destructing command.>
+<Relies on the fact that lines don't have a space at the end.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|FIND|.|DELETE}
+|ONCE}
+
+<Cleaning up periods after the last words.>
+
+~~~~~~~~~
+
+This is an example sentence1.
+
+This is a sentence too2.
+
+And another one. This line has two sentences3.
+
+This 4th line has no period4

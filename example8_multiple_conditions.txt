@@ -1,9 +1,13 @@
-<Delete all lines exceot lines with contain all of traitor, criminal, and agent...>
-<...and contain none of soldier and worker, while containing...>
-<...only 1 instance of foreign.>
+<
+Delete all lines exceot lines with contain all of traitor, criminal, and agent
+and contain none of soldier and worker, while containing
+only 1 instance of foreign.
+>
 
-<program notes: every top level line here appends to the end the body of the program...>
-<...that itself inserts to the beginning. This makes the order in which commands execute very predictable.>
+<
+program notes: every top level line here appends to the end the body of the program
+that itself inserts to the beginning. This makes the order in which commands execute very predictable.
+>
 
 {SEEK|EOF|APPEND|
 	{SEEK|SOF|INSERT|

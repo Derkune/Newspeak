@@ -1,6 +1,8 @@
-<Make the word "input" that isn't surrounded by square brackets to be surrounded, ...>
-<...and that one that is - to be not surrounded.>
-<Example: "Test sentence with input 1, [input] 2, input 3." -> "Test sentence with [input] 1, input 2, [input] 3."
+<
+Make the word "input" that isn't surrounded by square brackets to be surrounded,
+and that one that is - to be not surrounded.
+Example: "Test sentence with input 1, [input] 2, input 3." --- "Test sentence with [input] 1, input 2, [input] 3."
+>
 
 <The target word in filled with some junk symbols to ensure the order of substitutiion.>
 

@@ -1,5 +1,5 @@
-<The file contains lines containing lowercase 'i's. Collapse sequences of 'i's into...>
-<...single 'i' without affecting the rest of the text.>
+<The file contains lines containing lowercase 'i's. Collapse sequences of 'i's into>
+<single 'i' without affecting the rest of the text.>
 
 <The symbol '#' signifies a string of 'i's being processed.>
 

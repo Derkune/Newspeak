@@ -7,10 +7,13 @@
 		?\|SEEK\|SOF\|FIND\|A?\|DELETE\|SEEK\|SOL\|FIND\|B\|DELETE\|ONCE\}
 	}|ONCE
 }
-<Appends to the end of the file the main body of the program.>
-<The body finds B, seeks 1 to the left, and constructs a command around the char before B.>
-<This constructed command takes the char before B "as an argument", and appends it to the end of the line, together with a ? mark.>
-<However, before failing, the constructed command checks if it's been passed A? "as an argument", and in that case, removes it and the "B" that's by now at the start of the line.>
+<
+Appends to the end of the file the main body of the program.
+The body finds B, seeks 1 to the left, and constructs a command around the char before B.
+This constructed command takes the char before B "as an argument", and appends it to the end of the line, together with a ? mark.
+However, before failing, the constructed command checks if it's been passed A? "as an argument", and 
+in that case, removes it and the "B" that's by now at the start of the line.
+>
 
 {SEEK|EOF|APPEND|{SEEK|SOF|FIND|?|DELETE}|ONCE}
 <Cleaning up the ? question marks.>

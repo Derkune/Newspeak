@@ -1,0 +1,123 @@
+<Delete all lines exceot lines with contain all of traitor, criminal, and agent...>
+<...and contain none of soldier and worker, while containing...>
+<...only 1 instance of foreign.>
+
+<program notes: every top level line here appends to the end the body of the program...>
+<...that itself inserts to the beginning. This makes the order in which commands execute very predictable.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|traitor|SEEK|SOL|INSERT|_TR_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|criminal|SEEK|SOL|INSERT|_CR_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|agent|SEEK|SOL|INSERT|_AG_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|foreign|SEEK|SOL|INSERT|_FO1_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<placing markers for traitor, criminal, and agent, and at least 1 foreign>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|.|SEEK|SOL|INSERT|_SO_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|.|SEEK|SOL|INSERT|_WO_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<setting up the NOT gates for soldier and worker>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|soldier|SEEK|SOL|FIND|_SO_|DELETE|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|worker|SEEK|SOL|FIND|_WO_|DELETE|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<deleting markers _SO_ and _WO_, which leaves them where corresponding words are not found.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|foreign|APPEND|_FOREIGN_CURRENT_EXECUTION_|SEEK|SOL|INSERT|_FO_|FIND|_FOREIGN_CURRENT_EXECUTION_|REPLACE|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<marking each foreign>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|_FO__FO_|SEEK|SOL|INSERT|\{FIND\||SEEK|EOL|APPEND|\|ONCE\}|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<deleting lines with 2 or more foreign>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|.|SEEK|SOL|INSERT|_NOTALL_|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<setting up the NOT gate for meeting all the requirements.>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|_FO__WO__SO__FO1__AG__CR__TR_|SEEK|SOL|FIND|_NOTALL_|DELETE|SEEK|EOL|APPEND|SELF|ONCE}
+	|ONCE}
+|ONCE}
+
+<marking lines that don't meet all requirements>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|_NOTALL_|SEEK|SOL|INSERT|\{FIND\||SEEK|EOL|APPEND|\|ONCE\}}
+	|ONCE}
+|ONCE}
+
+<deleting lines marked as _NOTALL_>
+
+{SEEK|EOF|APPEND|
+	{SEEK|SOF|INSERT|
+		{FIND|_FO_|DELETE}
+		{FIND|_WO_|DELETE}
+		{FIND|_SO_|DELETE}
+		{FIND|_FO1_|DELETE}
+		{FIND|_AG_|DELETE}
+		{FIND|_CR_|DELETE}
+		{FIND|_TR_|DELETE}
+	|ONCE}
+|ONCE}
+
+<cleaing up>
+
+~~~~~
+
+1 Every traitor and criminal and foreign agent was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no foreign influence could corrupt the purity of the state. The soldier, loyal and unwavering, stood guard against any threat, while the worker toiled diligently for the glory of Big Brother.
+
+2 Every pest was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no foreign influence could corrupt the purity of the state. The defender, loyal and unwavering, stood guard against any threat, while the Party toiled diligently for the glory of Big Brother.
+
+3 Every traitor and criminal and foreign agent was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no ill influence could corrupt the purity of the state. The defender, loyal and unwavering, stood guard against any threat, while the Party toiled diligently for the glory of Big Brother. (SHOULD BE LEFT)
+
+4 Every traitor and criminal and foreign agent was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no foreign influence could corrupt the purity of the state. The defender, loyal and unwavering, stood guard against any threat, while the soldier toiled diligently for the glory of Big Brother.
+
+5 Every traitor and criminal and agent was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no ill influence could corrupt the purity of the state. The defender, loyal and unwavering, stood guard against any threat, while the Party toiled diligently for the glory of Big Brother.
+
+6 Every traitor and criminal and foreign agent was swiftly identified by the Thought Police. The defender of the Party, ever watchful, ensured that no ill influence could corrupt the purity of the state. The defender, loyal and unwavering, stood guard against any threat, while the Party toiled diligently for the glory of Big Brother. (SHOULD BE LEFT)
